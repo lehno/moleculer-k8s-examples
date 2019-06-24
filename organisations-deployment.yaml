@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: organisations
+  labels:
+    name: organisations
+spec:
+  selector:
+    matchLabels:
+      name: organisations
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: organisations
+    spec:
+      containers:
+        - name: organisations
+          image: myimage:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LOGGER
+              value: "true"
+            - name: LOGLEVEL
+              value: info
+            - name: MONGO_URI
+              value: mongodb://mongo/nlp
+            - name: SERVICES
+              value: services/organisations.service.js
+            - name: TRANSPORTER
+              value: nats://nats:4222
+      restartPolicy: Always

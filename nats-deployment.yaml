@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nats
+  labels:
+    name: nats
+spec:
+  selector:
+    matchLabels:
+      name: nats
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: nats
+    spec:
+      containers:
+        - image: nats
+          name: nats
+          ports:
+            - containerPort: 4222
+      restartPolicy: Always
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nats
+  labels:
+    name: nats
+spec:
+  ports:
+    - port: 4222
+      targetPort: 4222
+  selector:
+    name: nats

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clients
+  labels:
+    name: clients
+spec:
+  selector:
+    matchLabels:
+      name: clients
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        name: clients
+    spec:
+      containers:
+        - name: clients
+          image: myimage:v1
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: LOGGER
+              value: "true"
+            - name: LOGLEVEL
+              value: info
+            - name: MONGO_URI
+              value: mongodb://mongo/nlp
+            - name: SERVICES
+              value: services/clients.service.js
+            - name: TRANSPORTER
+              value: nats://nats:4222
+      restartPolicy: Always
